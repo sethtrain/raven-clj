@@ -43,6 +43,22 @@ The `notify` function is a general use function that could be placed throughout 
             (interfaces/stacktrace (Exception.))))
 ```
 
+#### Note about event-info map
+
+In the `notify` function I use merge to merge together the final packet to send to Sentry.  The only fields that can't be overwritten when sending information
+to `notify` is `event-id` and `timestamp`.  Everything else can be overwritten by passing along the new value for the key.  For instance, I set the platform for
+all Sentry log items to "clojure" to override this just pass the new value, from the example above, in the map with they key of `message`.  So you will then have:
+
+```clojure
+notify config
+        (-> {:message "Test Stacktrace Exception"
+             :platform "clj"}
+            (interfaces/stacktrace (Exception.))))
+```
+
+Plese refer to [Building the JSON Packet](http://sentry.readthedocs.org/en/latest/developer/client/index.html#building-the-json-packet) for more information on what
+attributes are allowed within the packet sent to Sentry.
+
 ## Ring middleware
 
 raven-clj also includes a Ring middleware that sends the Http and Stacktrace interfaces for Sentry packets.  Usage (for Compojure):
@@ -58,10 +74,9 @@ raven-clj also includes a Ring middleware that sends the Http and Stacktrace int
 ;; If you want to fully utilize the Http interface you should make sure
 ;; you use the wrap-params and wrap-keyword-params middlewares to ensure
 ;; the request data is stored correctly.
-(-> (handler/site routes)
+(-> routes
     (wrap-sentry config)
-    (wrap-params)
-    (wrap-keyword-params))
+    (handler/site))
 ```
 
 ## License
