@@ -20,7 +20,7 @@ The `notify` function is a general use function that could be placed throughout 
              ;; Optional
              :logger "raven-clj"})
 
-;; Adds:
+;; Associates:
 ;; "sentry.interfaces.Http"
 ;;  {:url "http://localhost:3000/"
 ;;   :scheme "http"
@@ -28,16 +28,16 @@ The `notify` function is a general use function that could be placed throughout 
 ;;   :uri "/"
 ;;   :method "POST"
 ;;   :data {:item "1"}}}
-;; to event-info map
+;; with event-info map
 (notify config
         (-> {:message "Test HTTP Exception"
              :tags {:testing "1.0"}}
             (interfaces/http request)))
 
-;; Add
+;; Associates:
 ;; "sentry.interfaces.Stacktrace"
 ;;  {:frames [{:filename "..." :function "..." :lineno 1}...]}
-;; to event-info map
+;; with event-info map
 (notify config
         (-> {:message "Test Stacktrace Exception"}
             (interfaces/stacktrace (Exception.))))
