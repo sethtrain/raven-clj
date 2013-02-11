@@ -10,7 +10,8 @@
    :method (:method req)
    :headers (get req :headers {})
    :query_string (get req :query-string "")
-   :data (get req :params {})})
+   :data (get req :params {})
+   :env {:session (get req :session {})}})
 
 (defn http [event-map req]
   (assoc event-map "sentry.interfaces.Http"
