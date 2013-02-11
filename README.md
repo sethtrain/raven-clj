@@ -59,8 +59,13 @@ raven-clj also includes a Ring middleware that sends the Http and Stacktrace int
              ;; Optional
              :logger "raven-clj"})
 
+;; If you want to fully utilize the Http interface you should make sure
+;; you use the wrap-params and wrap-keyword-params middlewares to ensure
+;; the request data is stored correctly.
 (-> (handler/site routes)
-    (wrap-sentry config))
+    (wrap-sentry config)
+    (wrap-params)
+    (wrap-keyword-params))
 ```
 
 ## License
