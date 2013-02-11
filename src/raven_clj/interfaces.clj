@@ -1,6 +1,6 @@
 (ns raven-clj.interfaces)
 
-(defn make-http-info [req]
+(defn- make-http-info [req]
   {:url (str (name (:scheme req))
              "://"
              (:server-name req)
@@ -16,12 +16,12 @@
   (assoc event-map "sentry.interfaces.Http"
          (make-http-info req)))
 
-(defn make-frame [element]
+(defn- make-frame [element]
   {:filename (.getFileName element)
    :lineno (.getLineNumber element)
    :function (.getMethodName element)})
 
-(defn make-stacktrace-info [elements]
+(defn- make-stacktrace-info [elements]
   {:frames (map make-frame elements)})
 
 (defn stacktrace [event-map e]
