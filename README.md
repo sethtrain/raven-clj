@@ -30,21 +30,27 @@ The `notify` function is a general use function that could be placed throughout 
           :method "POST"
           :data {:item "1"}}})
 
+;; Adds:
+;; "sentry.interfaces.Http"
+;;  {:url "http://localhost:3000/"
+;;   :scheme "http"
+;;   :server-name "locahost:3000"
+;;   :uri "/"
+;;   :method "POST"
+;;   :data {:item "1"}}}
+;; to event-info map
 (notify config
-        {:message "Test HTTP Exception"
-         :tags {:testing "1.0"}
-         "sentry.interfaces.Http"
-         {:url "http://localhost:3000/"
-          :scheme "http"
-          :server-name "locahost:3000"
-          :uri "/"
-          :method "POST"
-          :data {:item "1"}}})
+        (-> {:message "Test HTTP Exception"
+             :tags {:testing "1.0"}}
+            (interfaces/http request)))
 
+;; Add
+;; "sentry.interfaces.Http"
+;;  {:frames [{:filename "..." :function "..." :lineno 1}...]}
+;; to event-info map
 (notify config
-        {:message "Test Stacktrace Exception"
-         "sentry.interfaces.Stacktrace"
-         (stacktrace->sentry-interface (.getStackTrace (Exception.)))})
+        (-> {:message "Test Stacktrace Exception"}
+            (interfaces/stacktrace (Exception.))))
 ```
 
 ## Ring middleware
