@@ -56,7 +56,7 @@ all Sentry log items to "clojure" to override this just pass the new value, from
             (interfaces/stacktrace (Exception.))))
 ```
 
-Plese refer to [Building the JSON Packet](http://sentry.readthedocs.org/en/latest/developer/client/index.html#building-the-json-packet) for more information on what
+Please refer to [Building the JSON Packet](http://sentry.readthedocs.org/en/latest/developer/client/index.html#building-the-json-packet) for more information on what
 attributes are allowed within the packet sent to Sentry.
 
 ## Ring middleware
