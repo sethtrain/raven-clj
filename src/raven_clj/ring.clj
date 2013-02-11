@@ -7,7 +7,7 @@
     (try
       (handler req)
       (catch Exception e
-        (notify config (-> {:message (.getMessage e)}
-                           (http req)
-                           (stacktrace e)))
+        (future (notify config (-> {:message (.getMessage e)}
+                                   (http req)
+                                   (stacktrace e))))
         (throw e)))))
