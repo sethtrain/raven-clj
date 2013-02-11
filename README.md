@@ -50,7 +50,7 @@ to `notify` is `event-id` and `timestamp`.  Everything else can be overwritten b
 all Sentry log items to "clojure" to override this just pass the new value, from the example above, in the map with they key of `message`.  So you will then have:
 
 ```clojure
-notify config
+(notify config
         (-> {:message "Test Stacktrace Exception"
              :platform "clj"}
             (interfaces/stacktrace (Exception.))))
