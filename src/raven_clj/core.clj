@@ -6,18 +6,18 @@
            [java.sql Timestamp]
            [java.net InetAddress]))
 
-(defn generate-uuid []
+(defn- generate-uuid []
   (string/replace (UUID/randomUUID) #"-" ""))
 
-(defn make-sentry-url [domain project-id]
+(defn- make-sentry-url [domain project-id]
   (format "%s/api/%s/store/"
           domain project-id))
 
-(defn make-sentry-header [ts key secret]
+(defn- make-sentry-header [ts key secret]
   (format "Sentry sentry_version=2.0, sentry_client=raven-clj/0.1.0, sentry_timestamp=%s, sentry_key=%s, sentry_secret=%s"
           ts key secret))
 
-(defn send-packet [{:keys [ts domain project-id key secret] :as packet-info}]
+(defn- send-packet [{:keys [ts domain project-id key secret] :as packet-info}]
   (let [url (make-sentry-url domain project-id)
         header (make-sentry-header ts key secret)]
     (http/post url
