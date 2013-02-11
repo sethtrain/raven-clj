@@ -1,6 +1,6 @@
 # raven-clj
 
-A Clojure library designed to interface with Sentry.
+A Clojure interface to Sentry.
 
 ## Usage
 
