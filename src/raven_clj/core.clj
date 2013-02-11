@@ -14,7 +14,7 @@
           domain project-id))
 
 (defn- make-sentry-header [ts key secret]
-  (format "Sentry sentry_version=2.0, sentry_client=raven-clj/0.2.0, sentry_timestamp=%s, sentry_key=%s, sentry_secret=%s"
+  (format "Sentry sentry_version=2.0, sentry_client=raven-clj/0.3.0, sentry_timestamp=%s, sentry_key=%s, sentry_secret=%s"
           ts key secret))
 
 (defn- send-packet [{:keys [ts domain project-id key secret] :as packet-info}]
@@ -23,7 +23,7 @@
     (http/post url
                {:throw-exceptions false
                 :headers {"X-Sentry-Auth" header
-                          "User-Agent" "raven-clj/1.0"}
+                          "User-Agent" "raven-clj/0.3.0"}
                 :body (json/generate-string packet-info)})))
 
 (defn notify [config event-info]

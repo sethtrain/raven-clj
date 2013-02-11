@@ -5,7 +5,7 @@ A Clojure interface to Sentry.
 ## Usage
 
 ```clojure
-[raven-clj "0.2.0"]
+[raven-clj "0.3.0"]
 ```
 
 ### `notify`
