@@ -4,9 +4,11 @@ A Clojure interface to Sentry.
 
 ## Usage
 
-### `notify`
-
     [raven-clj "0.1.0"]
+
+
+
+### `notify`
 
 The `notify` function is a general use function that could be placed throughout your Clojure code to log information to your Sentry server.
 
