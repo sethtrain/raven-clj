@@ -15,6 +15,12 @@ The `notify` function is a general use function that could be placed throughout 
 ```clojure
 (def dsn "https://b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d@example.com/1")
 
+(notify dsn {:message "Test Exception Message"
+             :tags {:version "1.0"}
+             :logger "main-logger"
+             :extra {:my-key 1
+                     :some-other-value "foo bar"}})
+
 ;; Associates:
 ;; "sentry.interfaces.Http"
 ;;  {:url "http://localhost:3000/"
@@ -45,7 +51,7 @@ to `notify` is `event-id` and `timestamp`.  Everything else can be overwritten b
 all Sentry log items to "clojure" to override this just pass the new value, from the example above, in the map with they key of `message`.  So you will then have:
 
 ```clojure
-(notify config
+(notify dsn
         (-> {:message "Test Stacktrace Exception"
              :platform "clj"}
             (interfaces/stacktrace (Exception.))))
