@@ -8,14 +8,14 @@ A Clojure interface to Sentry.
 [raven-clj "0.5.0"]
 ```
 
-### `notify`
+### `capture`
 
-The `notify` function is a general use function that could be placed throughout your Clojure code to log information to your Sentry server.
+The `capture` function is a general use function that could be placed throughout your Clojure code to log information to your Sentry server.
 
 ```clojure
 (def dsn "https://b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d@example.com/1")
 
-(notify dsn {:message "Test Exception Message"
+(capture dsn {:message "Test Exception Message"
              :tags {:version "1.0"}
              :logger "main-logger"
              :extra {:my-key 1
@@ -30,7 +30,7 @@ The `notify` function is a general use function that could be placed throughout 
 ;;   :method "POST"
 ;;   :data {:item "1"}}}
 ;; with event-info map
-(notify dsn
+(capture dsn
         (-> {:message "Test HTTP Exception"
              :tags {:testing "1.0"}}
             (interfaces/http request)))
@@ -39,19 +39,19 @@ The `notify` function is a general use function that could be placed throughout 
 ;; "sentry.interfaces.Stacktrace"
 ;;  {:frames [{:filename "..." :function "..." :lineno 1}...]}
 ;; with event-info map
-(notify dsn
+(capture dsn
         (-> {:message "Test Stacktrace Exception"}
             (interfaces/stacktrace (Exception.))))
 ```
 
 #### Note about event-info map
 
-In the `notify` function I use merge to merge together the final packet to send to Sentry.  The only fields that can't be overwritten when sending information
-to `notify` is `event-id` and `timestamp`.  Everything else can be overwritten by passing along the new value for the key.  For instance, I set the platform for
+In the `capture` function I use merge to merge together the final packet to send to Sentry.  The only fields that can't be overwritten when sending information
+to `capture` is `event-id` and `timestamp`.  Everything else can be overwritten by passing along the new value for the key.  For instance, I set the platform for
 all Sentry log items to "clojure" to override this just pass the new value, from the example above, in the map with they key of `message`.  So you will then have:
 
 ```clojure
-(notify dsn
+(capture dsn
         (-> {:message "Test Stacktrace Exception"
              :platform "clj"}
             (interfaces/stacktrace (Exception.))))
