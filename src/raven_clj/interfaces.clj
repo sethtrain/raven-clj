@@ -17,7 +17,7 @@
   (assoc event-map "sentry.interfaces.Http"
          (make-http-info req)))
 
-(defn- make-frame [element]
+(defn- make-frame [^StackTraceElement element]
   {:filename (.getFileName element)
    :lineno (.getLineNumber element)
    :function (.getMethodName element)})
@@ -25,6 +25,6 @@
 (defn- make-stacktrace-info [elements]
   {:frames (map make-frame elements)})
 
-(defn stacktrace [event-map e]
+(defn stacktrace [event-map ^Exception e]
   (assoc event-map "sentry.interfaces.Stacktrace"
          (make-stacktrace-info (.getStackTrace e))))
