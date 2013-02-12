@@ -47,13 +47,12 @@ The `capture` function is a general use function that could be placed throughout
 #### Note about event-info map
 
 In the `capture` function I use merge to merge together the final packet to send to Sentry.  The only fields that can't be overwritten when sending information
-to `capture` is `event-id` and `timestamp`.  Everything else can be overwritten by passing along the new value for the key.  For instance, I set the platform for
-all Sentry log items to "clojure" to override this just pass the new value, from the example above, in the map with they key of `message`.  So you will then have:
+to `capture` is `event-id` and `timestamp`.  Everything else can be overwritten by passing along a new value for the key:
 
 ```clojure
 (capture dsn
         (-> {:message "Test Stacktrace Exception"
-             :platform "clj"}
+             :logger "application-logger"}
             (interfaces/stacktrace (Exception.))))
 ```
 
