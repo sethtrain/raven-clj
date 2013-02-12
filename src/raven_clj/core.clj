@@ -9,16 +9,16 @@
 (defn- generate-uuid []
   (string/replace (UUID/randomUUID) #"-" ""))
 
-(defn- make-sentry-url [domain project-id]
+(defn make-sentry-url [uri project-id]
   (format "%s/api/%s/store/"
-          domain project-id))
+          uri project-id))
 
-(defn- make-sentry-header [ts key secret]
+(defn make-sentry-header [ts key secret]
   (format "Sentry sentry_version=2.0, sentry_client=raven-clj/0.4.0, sentry_timestamp=%s, sentry_key=%s, sentry_secret=%s"
           ts key secret))
 
-(defn- send-packet [{:keys [ts domain project-id key secret] :as packet-info}]
-  (let [url (make-sentry-url domain project-id)
+(defn- send-packet [{:keys [ts uri project-id key secret] :as packet-info}]
+  (let [url (make-sentry-url uri project-id)
         header (make-sentry-header ts key secret)]
     (http/post url
                {:throw-exceptions false
@@ -26,12 +26,23 @@
                           "User-Agent" "raven-clj/0.4.0"}
                 :body (json/generate-string packet-info)})))
 
-(defn notify [config event-info]
+(defn parse-dsn [dsn]
+  (let [[proto-auth url] (string/split dsn #"@")
+        [protocol auth] (string/split proto-auth #"://")
+        [key secret] (string/split auth #":")]
+    {:key key
+     :secret secret
+     :uri (format "%s://%s" protocol
+                  (string/join
+                    "/" (butlast (string/split url #"/"))))
+     :project-id (Integer/parseInt (last (string/split url #"/")))}))
+
+(defn notify [dsn event-info]
   "Send a message to a Sentry server.
   event-info is a map that should contain a :message key and optional
   keys found at http://sentry.readthedocs.org/en/latest/developer/client/index.html#building-the-json-packet"
   (send-packet
-    (merge config
+    (merge (parse-dsn dsn)
            {:level "error"
             :plaform "clojure"
             :ts (str (Timestamp. (.getTime (Date.))))}

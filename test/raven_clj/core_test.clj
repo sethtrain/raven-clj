@@ -18,4 +18,18 @@
       (is (= (make-sentry-header ts
                                  "b70a31b3510c4cf793964a185cfe1fd0"
                                  "b7d80b520139450f903720eb7991bf3d")
-             (format "Sentry sentry_version=2.0, sentry_client=raven-clj/1.0, sentry_timestamp=%s, sentry_key=b70a31b3510c4cf793964a185cfe1fd0, sentry_secret=b7d80b520139450f903720eb7991bf3d" ts))))))
+             (format "Sentry sentry_version=2.0, sentry_client=raven-clj/0.4.0, sentry_timestamp=%s, sentry_key=b70a31b3510c4cf793964a185cfe1fd0, sentry_secret=b7d80b520139450f903720eb7991bf3d" ts))))))
+
+(deftest test-parse-dsn
+  (testing "dsn parsing"
+    (is (= (parse-dsn "https://b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d@example.com/1")
+           {:key "b70a31b3510c4cf793964a185cfe1fd0"
+            :secret "b7d80b520139450f903720eb7991bf3d"
+            :uri "https://example.com"
+            :project-id 1})))
+  (testing "dsn parsing with path"
+    (is (= (parse-dsn "https://b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d@example.com/sentry/1")
+           {:key "b70a31b3510c4cf793964a185cfe1fd0"
+            :secret "b7d80b520139450f903720eb7991bf3d"
+            :uri "https://example.com/sentry"
+            :project-id 1}))))
