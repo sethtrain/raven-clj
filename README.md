@@ -5,7 +5,7 @@ A Clojure interface to Sentry.
 ## Usage
 
 ```clojure
-[raven-clj "0.4.0"]
+[raven-clj "0.5.0"]
 ```
 
 ### `notify`
@@ -13,12 +13,7 @@ A Clojure interface to Sentry.
 The `notify` function is a general use function that could be placed throughout your Clojure code to log information to your Sentry server.
 
 ```clojure
-(def config {:domain "http://localhost:9000"
-             :project-id 2
-             :key "ef2f603f4c284b1287c65df7debc966c"
-             :secret "0bb4200b556d4fb59b0606d2e75f41a2"
-             ;; Optional
-             :logger "raven-clj"})
+(def dsn "https://b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d@example.com/1")
 
 ;; Associates:
 ;; "sentry.interfaces.Http"
@@ -29,7 +24,7 @@ The `notify` function is a general use function that could be placed throughout 
 ;;   :method "POST"
 ;;   :data {:item "1"}}}
 ;; with event-info map
-(notify config
+(notify dsn
         (-> {:message "Test HTTP Exception"
              :tags {:testing "1.0"}}
             (interfaces/http request)))
@@ -38,7 +33,7 @@ The `notify` function is a general use function that could be placed throughout 
 ;; "sentry.interfaces.Stacktrace"
 ;;  {:frames [{:filename "..." :function "..." :lineno 1}...]}
 ;; with event-info map
-(notify config
+(notify dsn
         (-> {:message "Test Stacktrace Exception"}
             (interfaces/stacktrace (Exception.))))
 ```
@@ -64,18 +59,18 @@ attributes are allowed within the packet sent to Sentry.
 raven-clj also includes a Ring middleware that sends the Http and Stacktrace interfaces for Sentry packets.  Usage (for Compojure):
 
 ```clojure
-(def config {:domain "http://localhost:9000"
-             :project-id 2
-             :key "ef2f603f4c284b1287c65df7debc966c"
-             :secret "0bb4200b556d4fb59b0606d2e75f41a2"
-             ;; Optional
-             :logger "raven-clj"})
+(def dsn "https://b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d@example.com/1")
 
 ;; If you want to fully utilize the Http interface you should make sure
 ;; you use the wrap-params and wrap-keyword-params middlewares to ensure
 ;; the request data is stored correctly.
 (-> routes
-    (wrap-sentry config)
+    (wrap-sentry dsn)
+    (handler/site))
+
+;; You could also include some of the optional attributes
+(-> routes
+    (wrap-sentry dsn {:tags {:version "1.0"}})
     (handler/site))
 ```
 
