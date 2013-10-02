@@ -21,7 +21,8 @@
   (let [url (make-sentry-url uri project-id)
         header (make-sentry-header ts key secret)]
     (http/post url
-               {:throw-exceptions false
+               {:insecure? true
+                :throw-exceptions false
                 :headers {"X-Sentry-Auth" header
                           "User-Agent" "raven-clj/0.6.0"}
                 :body (json/generate-string packet-info)})))
