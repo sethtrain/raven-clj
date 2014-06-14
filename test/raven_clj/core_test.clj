@@ -59,7 +59,6 @@
     (testing "with a valid dsn"
       (let [event-info (atom nil)]
         (with-redefs [send-packet (fn [ev] (reset! event-info ev))]
-          (println @event-info)
           (capture example-dsn {})
           (is (= (:platform @event-info) "clojure")
               "should set :platform in event-info to clojure"))))))
