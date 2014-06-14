@@ -4,6 +4,11 @@
   (:import [java.sql Timestamp]
            [java.util Date]))
 
+(def example-dsn
+  (str "https://"
+       "b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d"
+       "@example.com/1"))
+
 (deftest test-make-sentry-url
   (testing "secure url"
     (is (= (make-sentry-url "https://example.com" "1")
@@ -48,3 +53,13 @@
             :secret "b7d80b520139450f903720eb7991bf3d"
             :uri "https://example.com:9000/sentry"
             :project-id 1}))))
+
+(deftest test-capture
+  (testing "capture"
+    (testing "with a valid dsn"
+      (let [event-info (atom nil)]
+        (with-redefs [send-packet (fn [ev] (reset! event-info ev))]
+          (println @event-info)
+          (capture example-dsn {})
+          (is (= (:platform @event-info) "clojure")
+              "should set :platform in event-info to clojure"))))))

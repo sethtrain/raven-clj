@@ -17,7 +17,7 @@
   (format "Sentry sentry_version=2.0, sentry_client=raven-clj/0.6.0, sentry_timestamp=%s, sentry_key=%s, sentry_secret=%s"
           ts key secret))
 
-(defn- send-packet [{:keys [ts uri project-id key secret] :as packet-info}]
+(defn send-packet [{:keys [ts uri project-id key secret] :as packet-info}]
   (let [url (make-sentry-url uri project-id)
         header (make-sentry-header ts key secret)]
     (http/post url
@@ -43,10 +43,10 @@
   event-info is a map that should contain a :message key and optional
   keys found at http://sentry.readthedocs.org/en/latest/developer/client/index.html#building-the-json-packet"
   (send-packet
-    (merge (parse-dsn dsn)
-           {:level "error"
-            :plaform "clojure"
-            :ts (str (Timestamp. (.getTime (Date.))))}
-           event-info
-           {:event-id (generate-uuid)
-            :server-name (.getHostName (InetAddress/getLocalHost))})))
+   (merge (parse-dsn dsn)
+          {:level "error"
+           :platform "clojure"
+           :ts (str (Timestamp. (.getTime (Date.))))}
+          event-info
+          {:event-id (generate-uuid)
+           :server-name (.getHostName (InetAddress/getLocalHost))})))
