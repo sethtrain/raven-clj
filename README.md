@@ -5,7 +5,7 @@ A Clojure interface to Sentry.
 ## Usage
 
 ```clojure
-[raven-clj "0.6.0"]
+[raven-clj "1.0.0"]
 ```
 
 ### `capture`
@@ -83,6 +83,6 @@ raven-clj also includes a Ring middleware that sends the Http and Stacktrace int
 
 ## License
 
-Copyright © 2013 Seth Buntin
+Copyright © 2013, 2014 Seth Buntin
 
 Distributed under the Eclipse Public License, the same as Clojure.
