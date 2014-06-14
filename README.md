@@ -64,6 +64,8 @@ attributes are allowed within the packet sent to Sentry.
 raven-clj also includes a Ring middleware that sends the Http and Stacktrace interfaces for Sentry packets.  Usage (for Compojure):
 
 ```clojure
+(use 'raven-clj.ring)
+
 (def dsn "https://b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d@example.com/1")
 
 ;; If you want to fully utilize the Http interface you should make sure
