@@ -5,7 +5,7 @@ A Clojure interface to Sentry.
 ## Usage
 
 ```clojure
-[raven-clj "1.0.0"]
+[raven-clj "1.0.1"]
 ```
 
 ### `capture`
@@ -25,7 +25,8 @@ The `capture` function is a general use function that could be placed throughout
 ;; "sentry.interfaces.Http"
 ;;  {:url "http://localhost:3000/"
 ;;   :scheme "http"
-;;   :server-name "locahost:3000"
+;;   :server_name "locahost:3000"
+;;   :event_id "<generated UUID>"
 ;;   :uri "/"
 ;;   :method "POST"
 ;;   :data {:item "1"}}}
