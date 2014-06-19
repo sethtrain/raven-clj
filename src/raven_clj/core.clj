@@ -46,7 +46,7 @@
    (merge (parse-dsn dsn)
           {:level "error"
            :platform "clojure"
+           :server_name (.getHostName (InetAddress/getLocalHost))
            :ts (str (Timestamp. (.getTime (Date.))))}
           event-info
-          {:event_id (generate-uuid)
-           :server_name (.getHostName (InetAddress/getLocalHost))})))
+          {:event_id (generate-uuid)})))
