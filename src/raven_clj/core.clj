@@ -48,5 +48,5 @@
            :platform "clojure"
            :ts (str (Timestamp. (.getTime (Date.))))}
           event-info
-          {:event-id (generate-uuid)
-           :server-name (.getHostName (InetAddress/getLocalHost))})))
+          {:event_id (generate-uuid)
+           :server_name (.getHostName (InetAddress/getLocalHost))})))
