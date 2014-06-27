@@ -1,4 +1,5 @@
 (ns raven-clj.core-test
+  (:require [clj-http.client :as http])
   (:use clojure.test
         raven-clj.core)
   (:import [java.sql Timestamp]
@@ -19,11 +20,38 @@
 
 (deftest test-make-sentry-header
   (testing "sentry header"
-    (let [ts (str (Timestamp. (.getTime (Date.))))]
-      (is (= (make-sentry-header ts
-                                 "b70a31b3510c4cf793964a185cfe1fd0"
-                                 "b7d80b520139450f903720eb7991bf3d")
-             (format "Sentry sentry_version=2.0, sentry_client=raven-clj/0.6.0, sentry_timestamp=%s, sentry_key=b70a31b3510c4cf793964a185cfe1fd0, sentry_secret=b7d80b520139450f903720eb7991bf3d" ts))))))
+    (let [ts (str (Timestamp. (.getTime (Date.))))
+          key "b70a31b3510c4cf793964a185cfe1fd0"
+          secret "b7d80b520139450f903720eb7991bf3d"
+          client-version "1.0.2"
+          hdr (make-sentry-header ts key secret)]
+
+      (is (.contains hdr "sentry_version=2.0")
+          "includes sentry version")
+      (is (.contains hdr (str "sentry_client=raven-clj/" client-version))
+          "includes client version")
+      (is (.contains hdr (format "sentry_timestamp=%s" ts))
+          "includes timestamp")
+      (is (.contains hdr (str "sentry_key=" key))
+          "includes key")
+      (is (.contains hdr (str "sentry_secret=" secret))
+          "includes secret")
+      (is (= hdr (format "Sentry sentry_version=2.0, sentry_client=raven-clj/%s, sentry_timestamp=%s, sentry_key=%s, sentry_secret=%s" client-version ts key secret))))))
+
+(deftest test-send-packet
+  (testing "send-packet"
+    (let [actual-opts (atom nil)
+          packet {:key "key"
+                  :secret "secret"
+                  :uri "uri"
+                  :project-id "project-id"
+                  :ts "ts"}]
+      (with-redefs [http/post (fn [url opts]
+                                (reset! actual-opts opts))]
+        (send-packet packet)
+
+        (is (= (-> @actual-opts :headers (get "User-Agent")) "raven-clj/1.0.2")
+            "includes User-Agent header in request")))))
 
 (deftest test-parse-dsn
   (testing "dsn parsing"
