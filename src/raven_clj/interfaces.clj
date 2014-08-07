@@ -20,7 +20,7 @@
 (defn- make-frame [^StackTraceElement element]
   {:filename (.getFileName element)
    :lineno (.getLineNumber element)
-   :function (.getMethodName element)})
+   :function (str (.getClassName element) "." (.getMethodName element))})
 
 (defn- make-stacktrace-info [elements]
   {:frames (reverse (map make-frame elements))})
