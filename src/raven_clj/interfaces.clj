@@ -20,10 +20,10 @@
 (defn- make-frame [^StackTraceElement element]
   {:filename (.getFileName element)
    :lineno (.getLineNumber element)
-   :function (.getMethodName element)})
+   :function (str (.getClassName element) "." (.getMethodName element))})
 
 (defn- make-stacktrace-info [elements]
-  {:frames (map make-frame elements)})
+  {:frames (reverse (map make-frame elements))})
 
 (defn stacktrace [event-map ^Exception e]
   (assoc event-map "sentry.interfaces.Stacktrace"
