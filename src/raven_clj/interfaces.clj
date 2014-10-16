@@ -17,14 +17,17 @@
   (assoc event-map "sentry.interfaces.Http"
          (make-http-info req)))
 
-(defn- make-frame [^StackTraceElement element]
+(defn- make-frame [^StackTraceElement element app-namespaces]
   {:filename (.getFileName element)
    :lineno (.getLineNumber element)
-   :function (str (.getClassName element) "." (.getMethodName element))})
+   :function (str (.getClassName element) "." (.getMethodName element))
+   :in_app (boolean (some #(.startsWith (.getClassName element) %) app-namespaces))})
 
-(defn- make-stacktrace-info [elements]
-  {:frames (reverse (map make-frame elements))})
+(defn- make-stacktrace-info [elements app-namespaces]
+  {:frames (reverse (map #(make-frame % app-namespaces) elements))})
 
-(defn stacktrace [event-map ^Exception e]
-  (assoc event-map "sentry.interfaces.Stacktrace"
-         (make-stacktrace-info (.getStackTrace e))))
+(defn stacktrace [event-map ^Exception e & [app-namespaces]]
+  (assoc event-map
+    :exception [{:stacktrace (make-stacktrace-info (.getStackTrace e) app-namespaces)
+                 :type (str (class e))
+                 :value (.getMessage e)}]))

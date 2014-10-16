@@ -40,9 +40,10 @@ The `capture` function is a general use function that could be placed throughout
 ;; "sentry.interfaces.Stacktrace"
 ;;  {:frames [{:filename "..." :function "..." :lineno 1}...]}
 ;; with event-info map
+;; Optionally pass your app's namespaces as the final arg to stacktrace
 (capture dsn
         (-> {:message "Test Stacktrace Exception"}
-            (interfaces/stacktrace (Exception.))))
+            (interfaces/stacktrace (Exception.) ["myapp.ns"])))
 ```
 
 #### Note about event-info map
@@ -76,9 +77,11 @@ raven-clj also includes a Ring middleware that sends the Http and Stacktrace int
     (wrap-sentry dsn)
     (handler/site))
 
-;; You could also include some of the optional attributes
+;; You could also include some of the optional attributes and pass
+;; your app's namespace prefixes so your app's stack frames are
+;; highlighted in sentry
 (-> routes
-    (wrap-sentry dsn {:tags {:version "1.0"}})
+    (wrap-sentry dsn {:tags {:version "1.0"}} ["myapp" "com.mylib"])
     (handler/site))
 ```
 
