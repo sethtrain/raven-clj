@@ -8,7 +8,7 @@
                            (http req http-alter-fn)
                            (stacktrace error app-namespaces)))))
 
-(defn wrap-sentry [handler dsn & [opts] [extra app-namespaces]]
+(defn wrap-sentry [handler dsn & [opts]]
   (fn [req]
     (let [alter-fn (or (:http-alter-fn opts)
                        identity)]
