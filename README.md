@@ -5,7 +5,7 @@ A Clojure interface to Sentry.
 ## Usage
 
 ```clojure
-[raven-clj "1.2.0"]
+[raven-clj "1.3.0"]
 ```
 
 ### `capture`
