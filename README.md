@@ -77,16 +77,19 @@ raven-clj also includes a Ring middleware that sends the Http and Stacktrace int
     (wrap-sentry dsn)
     (handler/site))
 
-;; You could also include some of the optional attributes and pass
+;; You could also include some of the optional attributes, pass
 ;; your app's namespace prefixes so your app's stack frames are
-;; highlighted in sentry
+;; highlighted in sentry or specify a function to alter the data
+;; that is stored from the HTTP request.
 (-> routes
-    (wrap-sentry dsn {:tags {:version "1.0"}} ["myapp" "com.mylib"])
+    (wrap-sentry dsn {:extra {:tags {:version "1.0"}}
+                      :namespaces ["myapp" "com.mylib"]
+                      :http-alter-fn (fn [r] (dissoc r :data))})
     (handler/site))
 ```
 
 ## License
 
-Copyright © 2013, 2014 Seth Buntin
+Copyright © 2013-2015 Seth Buntin
 
 Distributed under the Eclipse Public License, the same as Clojure.

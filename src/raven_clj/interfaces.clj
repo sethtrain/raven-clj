@@ -13,9 +13,9 @@
    :data (get req :params {})
    :env {:session (get req :session {})}})
 
-(defn http [event-map req]
+(defn http [event-map req alter-fn]
   (assoc event-map "sentry.interfaces.Http"
-         (make-http-info req)))
+         (alter-fn (make-http-info req))))
 
 (defn- make-frame [^StackTraceElement element app-namespaces]
   {:filename (.getFileName element)
