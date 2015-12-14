@@ -4,6 +4,8 @@
   (:import [java.sql Timestamp]
            [java.util Date]))
 
+(println "Testing Clojure version" (clojure-version))
+
 (def example-dsn
   (str "https://"
        "b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d"
