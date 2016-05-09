@@ -8,6 +8,11 @@ A Clojure interface to Sentry.
 [raven-clj "1.3.2-SNAPSHOT"]
 ```
 
+## Changes
+
+- 1.3.2 (unreleased, snapshot might be available)
+    - update `clj-http` to `3.0.1`
+
 ### `capture`
 
 The `capture` function is a general use function that could be placed throughout your Clojure code to log information to your Sentry server.
