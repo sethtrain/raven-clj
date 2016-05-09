@@ -5,12 +5,12 @@ A Clojure interface to Sentry.
 ## Usage
 
 ```clojure
-[raven-clj "1.3.2-SNAPSHOT"]
+[raven-clj "1.3.2"]
 ```
 
 ## Changes
 
-- 1.3.2 (unreleased, snapshot might be available)
+- **1.3.2**
     - update `clj-http` to `3.0.1`
 
 ### `capture`
