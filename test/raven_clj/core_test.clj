@@ -23,7 +23,7 @@
     (let [ts (str (Timestamp. (.getTime (Date.))))
           key "b70a31b3510c4cf793964a185cfe1fd0"
           secret "b7d80b520139450f903720eb7991bf3d"
-          client-version "1.0.2"
+          client-version "1.3.2"
           hdr (make-sentry-header ts key secret)]
 
       (is (.contains hdr "sentry_version=2.0")
@@ -50,7 +50,7 @@
                                 (reset! actual-opts opts))]
         (send-packet packet)
 
-        (is (= (-> @actual-opts :headers (get "User-Agent")) "raven-clj/1.0.2")
+        (is (= (-> @actual-opts :headers (get "User-Agent")) "raven-clj/1.3.2")
             "includes User-Agent header in request")))))
 
 (deftest test-parse-dsn
