@@ -58,7 +58,7 @@ to `capture` is `event-id` and `timestamp`.  Everything else can be overwritten 
             (interfaces/stacktrace (Exception.))))
 ```
 
-Please refer to [Building the JSON Packet](http://sentry.readthedocs.org/en/latest/developer/client/index.html#building-the-json-packet) for more information on what
+Please refer to [Building the JSON Packet](https://docs.getsentry.com/hosted/clientdev/#building-the-json-packet) for more information on what
 attributes are allowed within the packet sent to Sentry.
 
 ## Ring middleware
