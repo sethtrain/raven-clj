@@ -23,13 +23,14 @@
 
 (defn send-packet [{:keys [ts uri project-id key secret] :as packet-info}]
   (let [url (make-sentry-url uri project-id)
-        header (make-sentry-header ts key secret)]
+        header (make-sentry-header ts key secret)
+        body (dissoc packet-info :ts :uri :project-id :key :secret)]
     (http/post url
                {:insecure? true
                 :throw-exceptions false
                 :headers {"X-Sentry-Auth" header
                           "User-Agent" sentry-client}
-                :body (json/generate-string packet-info)})))
+                :body (json/generate-string body)})))
 
 (defn parse-dsn [dsn]
   (let [[proto-auth url] (string/split dsn #"@")
