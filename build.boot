@@ -8,7 +8,7 @@
 
 (task-options!
  pom {:project 'raven-clj
-      :version "1.3.2"
+      :version "1.4.0"
       :description "Sentry clojure client"
       :url "http://github.com/sethtrain/raven-clj"
       :license {"EPL" "http://www.eclipse.org/legal/epl-v10.html"}})
