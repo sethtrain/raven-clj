@@ -3,12 +3,13 @@
  :dependencies '[[org.clojure/clojure "1.8.0" :scope "provided"]
                  [cheshire "5.0.1"]
                  [clj-http "3.0.1"]
+                 [prone "1.0.1"]
 
                  [adzerk/boot-test "1.1.1" :scope "test"]])
 
 (task-options!
  pom {:project 'raven-clj
-      :version "1.4.0"
+      :version "1.4.1"
       :description "Sentry clojure client"
       :url "http://github.com/sethtrain/raven-clj"
       :license {"EPL" "http://www.eclipse.org/legal/epl-v10.html"}})

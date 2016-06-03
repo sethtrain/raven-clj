@@ -5,7 +5,7 @@ A Clojure interface to Sentry.
 ## Usage
 
 ```clojure
-[raven-clj "1.4.0"]
+[raven-clj "1.4.1"]
 ```
 
 ### `capture`
@@ -90,6 +90,8 @@ raven-clj also includes a Ring middleware that sends the Http and Stacktrace int
 
 ## Changes
 
+- **1.4.1**
+    - actually depend on prone [prone](https://github.com/magnars/prone) — **this means 1.4.0 is defunct**
 - **1.4.0**
     - use [prone](https://github.com/magnars/prone) to retrieve better stackframes ([#10](https://github.com/sethtrain/raven-clj/pull/10))
     - fix warnings in Sentry UI caused by unknown keys in request body ([#13](https://github.com/sethtrain/raven-clj/pull/13))
