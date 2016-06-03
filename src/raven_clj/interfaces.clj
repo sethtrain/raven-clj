@@ -1,5 +1,8 @@
 (ns raven-clj.interfaces
-  (:require [prone.stacks :as stacks]))
+  (:require [prone.stacks :as prone-stack]
+            [clojure.stacktrace :as clj-stack]
+            [clojure.java.io :as io]
+            [clojure.string :as string]))
 
 (defn- make-http-info [req]
   {:url (str (name (:scheme req))
@@ -21,7 +24,7 @@
 (defn file->source [file-path line-number]
   (some-> (io/resource file-path)
     slurp
-    (str/split #"\n")
+    (string/split #"\n")
     (#(drop (- line-number 6) %))
     (#(take 11 %))))
 
@@ -39,7 +42,7 @@
      :post_context (drop 6 source)}))
 
 (defn stacktrace [event-map ^Exception e & [app-namespaces]]
-  (let [stacks (stacks/normalize-exception (stack/root-cause e))
+  (let [stacks  (prone-stack/normalize-exception (clj-stack/root-cause e))
         frames  (map (partial frame->sentry app-namespaces)
                   (reverse (:frames stacks)))]
     (assoc event-map
