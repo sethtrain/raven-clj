@@ -43,10 +43,11 @@
                     "/" (butlast (string/split url #"/"))))
      :project-id (Integer/parseInt (last (string/split url #"/")))}))
 
-(defn capture [dsn event-info]
+(defn capture
   "Send a message to a Sentry server.
   event-info is a map that should contain a :message key and optional
   keys found at https://docs.getsentry.com/hosted/clientdev/#building-the-json-packet"
+  [dsn event-info]
   (send-packet
    (merge (parse-dsn dsn)
           {:level "error"
