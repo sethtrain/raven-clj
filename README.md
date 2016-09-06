@@ -5,7 +5,7 @@ A Clojure interface to Sentry.
 ## Usage
 
 ```clojure
-[raven-clj "1.4.1"]
+[raven-clj "1.4.3"]
 ```
 
 ### `capture`
@@ -90,6 +90,9 @@ raven-clj also includes a Ring middleware that sends the Http and Stacktrace int
 
 ## Changes
 
+- **1.4.3**
+    - fix docstring argvec order in `capture` function ([#16](https://github.com/sethtrain/raven-clj/pull/16))
+    - fix NPE when a frame's file path is `nil` ([#14](https://github.com/sethtrain/raven-clj/pull/14))
 - **1.4.2**
     - add missing requires
 - **1.4.1 (defunct)**
