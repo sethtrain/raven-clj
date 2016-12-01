@@ -15,14 +15,16 @@
                            (stacktrace error app-namespaces)))))
 
 (defn wrap-sentry [handler dsn & [opts]]
-  (fn [req]
-    (let [alter-fn (or (:http-alter-fn opts)
-                       identity)]
-      (try
-        (handler req)
-        (catch Exception e
-          (capture-error dsn req e (:extra opts) (:namespaces opts) alter-fn)
-          (throw e))
-        (catch AssertionError e
-          (capture-error dsn req e (:extra opts) (:namespaces opts) alter-fn)
-          (throw e))))))
+  (if dsn
+    (fn [req]
+      (let [alter-fn (or (:http-alter-fn opts)
+                         identity)]
+        (try
+          (handler req)
+          (catch Exception e
+            (capture-error dsn req e (:extra opts) (:namespaces opts) alter-fn)
+            (throw e))
+          (catch AssertionError e
+            (capture-error dsn req e (:extra opts) (:namespaces opts) alter-fn)
+            (throw e)))))
+    handler))
