@@ -38,7 +38,7 @@
      :lineno       (:line-number frame)
      :function     (str (:package frame) "/" (:method-name frame))
      :in_app       (in-app (:package frame) app-namespaces)
-     :context_line (nth source 5)
+     :context_line (nth source 5 nil)
      :pre_context  (take 5 source)
      :post_context (drop 6 source)}))
 
