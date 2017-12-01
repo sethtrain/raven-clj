@@ -4,9 +4,11 @@ A Clojure interface to Sentry.
 
 ## Usage
 
+[](dependency)
 ```clojure
-[raven-clj "1.5.0"]
+[raven-clj "1.5.1"] ;; latest release
 ```
+[](/dependency)
 
 ### `capture`
 
@@ -90,6 +92,8 @@ raven-clj also includes a Ring middleware that sends the Http and Stacktrace int
 
 ## Changes
 
+- **1.5.1**
+    - Prevent indexOutOfBounds exception when determining context line ([#25](https://github.com/sethtrain/raven-clj/pull/25))
 - **1.5.0**
     - fix how request method is extracted from ring requests ([#22](https://github.com/sethtrain/raven-clj/pull/22)
     - send stringified ex-data ([#21](https://github.com/sethtrain/raven-clj/pull/22))
