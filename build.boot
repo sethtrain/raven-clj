@@ -20,6 +20,7 @@
       :version +version+
       :description "Sentry clojure client"
       :url "http://github.com/sethtrain/raven-clj"
+      :scm {:url "http://github.com/sethtrain/raven-clj"}
       :license {"EPL" "http://www.eclipse.org/legal/epl-v10.html"}})
 
 (deftask test! []
