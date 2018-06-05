@@ -1,6 +1,6 @@
 (ns raven-clj.core
   (:require [cheshire.core :as json]
-            [clj-http.client :as http]
+            [clj-http.lite.client :as http]
             [clojure.java.io :as io]
             [clojure.string :as string])
   (:import [java.util Date UUID]
@@ -37,8 +37,7 @@
         header (make-sentry-header ts key secret)
         body (dissoc packet-info :ts :uri :project-id :key :secret)]
     (http/post url
-               {:insecure? true
-                :throw-exceptions false
+               {:throw-exceptions false
                 :headers {"X-Sentry-Auth" header
                           "User-Agent" sentry-client}
                 :body (json/generate-string body)})))

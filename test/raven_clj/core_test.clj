@@ -1,5 +1,5 @@
 (ns raven-clj.core-test
-  (:require [clj-http.client :as http])
+  (:require [clj-http.lite.client :as http])
   (:use clojure.test
         raven-clj.core)
   (:import [java.sql Timestamp]

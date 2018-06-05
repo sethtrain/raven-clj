@@ -2,7 +2,7 @@
  :resource-paths #{"src" "resources"}
  :dependencies '[[org.clojure/clojure "1.8.0" :scope "provided"]
                  [cheshire "5.0.1"]
-                 [clj-http "3.0.1"]
+                 [clj-http-lite "0.3.0"]
                  [prone "1.0.1"]
 
                  [adzerk/bootlaces "0.1.13" :scope "test"]
