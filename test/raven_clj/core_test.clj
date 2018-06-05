@@ -91,3 +91,14 @@
           (capture example-dsn {})
           (is (= (:platform @event-info) "clojure")
               "should set :platform in event-info to clojure"))))))
+
+(deftest test-uncaught-exception-handler
+  (let [event-info (atom nil)
+        exception  (atom nil)]
+    (install-uncaught-exception-handler!
+     example-dsn
+     {:handler (fn [thread ex] (reset! exception ex))})
+    (.start (Thread. (cast Runnable (fn [] (throw (ex-info "Test exception" {:hello :world}))))))
+    (Thread/sleep 100)
+    (is (true? (some? @exception)))
+    (is (= "Test exception" (some-> @exception (.getMessage))))))

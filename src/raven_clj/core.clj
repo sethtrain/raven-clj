@@ -78,7 +78,7 @@
   [dsn {:keys [packet-transform app-namespaces handler]
         :or {packet-transform identity
              handler (fn default-uncaught-handler [thread throwable]
-                       (println (format "Uncaught exception on thread %s" thread))
+                       (println (format "Uncaught exception on thread %s" (.getName thread)))
                        (.printStackTrace throwable))}}]
   (Thread/setDefaultUncaughtExceptionHandler
    (reify Thread$UncaughtExceptionHandler
