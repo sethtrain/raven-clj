@@ -17,6 +17,8 @@ A Clojure interface to Sentry.
 The `capture` function is a general use function that could be placed throughout your Clojure code to log information to your Sentry server.
 
 ```clojure
+(require '[raven-clj.core :refer :all])
+
 (def dsn "https://b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d@example.com/1")
 
 (capture dsn {:message "Test Exception Message"
@@ -24,36 +26,41 @@ The `capture` function is a general use function that could be placed throughout
               :logger "main-logger"
               :extra {:my-key 1
                       :some-other-value "foo bar"}})
+```
 
-;; Associates:
-;; "sentry.interfaces.Http"
-;;  {:url "http://localhost:3000/"
-;;   :scheme "http"
-;;   :server_name "locahost:3000"
-;;   :event_id "<generated UUID>"
-;;   :uri "/"
-;;   :method "POST"
-;;   :data {:item "1"}}}
-;; with event-info map
+Various interfaces are supported. 
+
+#### HTTP
+
+```clojure
+(require '[raven-clj.interfaces :as interfaces])
+
 (capture dsn
         (-> {:message "Test HTTP Exception"
              :tags {:testing "1.0"}}
-            (interfaces/http request)))
+            (interfaces/http ring-style-request-map)))
+```
 
-;; Associates:
-;; "sentry.interfaces.Stacktrace"
-;;  {:frames [{:filename "..." :function "..." :lineno 1}...]}
-;; with event-info map
-;; Optionally pass your app's namespaces as the final arg to stacktrace
+#### Exceptions
+
+```clojure
+;; All namespaces in the following map will be regarded
+;; as application code and highlighted in Sentry's stacktraces
+;; > Note that this also matches "myapp.ns.core" etc.
+(def your-namespace ["myapp.ns"])
+
 (capture dsn
         (-> {:message "Test Stacktrace Exception"}
-            (interfaces/stacktrace (Exception.) ["myapp.ns"])))
+            (interfaces/stacktrace (Exception.) your-ns)))
 ```
 
 #### Note about event-info map
 
-In the `capture` function I use merge to merge together the final packet to send to Sentry.  The only fields that can't be overwritten when sending information
-to `capture` is `event-id` and `timestamp`.  Everything else can be overwritten by passing along a new value for the key:
+In the `capture` function I use merge to merge together the final
+packet to send to Sentry.  The only fields that can't be overwritten
+when sending information to `capture` is `event-id` and `timestamp`.
+Everything else can be overwritten by passing along a new value for
+the key:
 
 ```clojure
 (capture dsn
