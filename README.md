@@ -2,6 +2,8 @@
 
 A Clojure interface to Sentry.
 
+[Usage](#usage) | [Ring Middleware](#ring-middleware) | [Alternatives](#alternatives) | [Changes](#changes) | [Contributing](#contributing)
+
 ## Usage
 
 [](dependency)
@@ -90,6 +92,14 @@ raven-clj also includes a Ring middleware that sends the Http and Stacktrace int
     (handler/site))
 ```
 
+## Alternatives
+
+There are a variety of Clojure libraries for Sentry, a quick, not necessarily up-to-date overview/comparison:
+
+- [`io.sentry/sentry-clj`](https://github.com/getsentry/sentry-clj), the official one. Wraps Sentry's own Java client. Light on dependencies.
+- [`exoscale/raven`](https://github.com/exoscale/raven), a newer one. Depends on Netty. Well documented.
+- [`raven-clj`](https://github.com/sethtrain/raven-clj/), the one you're looking at. Similar dependencies as Sentry's own client. Perhaps slightly more ergonomic.
+
 ## Changes
 
 - **1.5.2**
@@ -111,6 +121,19 @@ raven-clj also includes a Ring middleware that sends the Http and Stacktrace int
     - fix warnings in Sentry UI caused by unknown keys in request body ([#13](https://github.com/sethtrain/raven-clj/pull/13))
 - **1.3.2**
     - update `clj-http` to `3.0.1`
+
+## Contributing
+
+- Build and install the jar with `boot build-jar`
+- Start a repl with `boot repl`
+- Run tests with `boot test!`
+- Deploy a release with `boot build-jar push-release`
+
+PRs and issues welcome :tada:
+
+**Note:** Because this library uses it's own version in various
+places the version is stored on the classpath. In order to modify
+the version you need to modify `resources/raven_clj/version.txt`.
 
 ## License
 
