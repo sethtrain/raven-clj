@@ -1,5 +1,6 @@
 (ns raven-clj.core
   (:require [cheshire.core :as json]
+            [raven-clj.interfaces :as interfaces]
             [clj-http.lite.client :as http]
             [clojure.java.io :as io]
             [clojure.string :as string])
@@ -66,3 +67,23 @@
            :ts (str (Timestamp. (.getTime (Date.))))}
           event-info
           {:event_id (generate-uuid)})))
+
+(defn install-uncaught-exception-handler!
+  "Install an uncaught exception handler that `capture`s exceptions.
+
+  Available options:
+  - `:packet-transform` can be used to modify the event before it is sent. Useful to insert release information, tags, etc.
+  - `:app-namespaces` will get passed to `raven-clj.interfaces/stacktrace`.
+  - `:handler` will be called with the thread and throwable. Default implementation prints."
+  [dsn {:keys [packet-transform app-namespaces handler]
+        :or {packet-transform identity
+             handler (fn default-uncaught-handler [thread throwable]
+                       (println (format "Uncaught exception on thread %s" thread))
+                       (.printStackTrace throwable))}}]
+  (Thread/setDefaultUncaughtExceptionHandler
+   (reify Thread$UncaughtExceptionHandler
+     (uncaughtException [_ thread throwable]
+       (handler thread throwable)
+       (capture dsn (-> {}
+                        (interfaces/stacktrace throwable app-namespaces)
+                        packet-transform))))))
