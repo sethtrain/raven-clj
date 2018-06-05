@@ -45,7 +45,7 @@
 (defn stacktrace [event-map ^Exception e & [app-namespaces]]
   (let [stacks  (prone-stack/normalize-exception (clj-stack/root-cause e))
         frames  (map (partial frame->sentry app-namespaces)
-                  (reverse (:frames stacks)))]
+                     (reverse (:frames stacks)))]
     (assoc event-map
       :exception [{:value      (:message stacks)
                    :type       (:type stacks)
