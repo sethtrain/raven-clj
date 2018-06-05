@@ -12,12 +12,12 @@ A Clojure interface to Sentry.
 ```
 [](/dependency)
 
-### `capture`
-
-The `capture` function is a general use function that could be placed throughout your Clojure code to log information to your Sentry server.
+`raven-clj.core/capture` is a general use function that can be
+placed throughout your Clojure code to log information to your Sentry
+server.
 
 ```clojure
-(require '[raven-clj.core :refer :all])
+(require '[raven-clj.core :refer [capture]])
 
 (def dsn "https://b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d@example.com/1")
 
@@ -71,6 +71,12 @@ the key:
 
 Please refer to [Building the JSON Packet](https://docs.getsentry.com/hosted/clientdev/#building-the-json-packet) for more information on what
 attributes are allowed within the packet sent to Sentry.
+
+#### Uncaught exception handler
+
+Since `1.6.0-alpha` a function that will install an [uncaught exception
+handler](https://stuartsierra.com/2015/05/27/clojure-uncaught-exceptions)
+is included, see `raven-clj.core/install-uncaught-exception-handler!` for details.
 
 ## Ring middleware
 
