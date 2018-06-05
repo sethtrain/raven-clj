@@ -8,7 +8,7 @@ A Clojure interface to Sentry.
 
 [](dependency)
 ```clojure
-[raven-clj "1.5.2"] ;; latest release
+[raven-clj "1.6.0-alpha"] ;; latest release
 ```
 [](/dependency)
 
