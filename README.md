@@ -102,6 +102,9 @@ There are a variety of Clojure libraries for Sentry, a quick, not necessarily up
 
 ## Changes
 
+- **1.6.0-alpha**
+    - Switch from `clj-http` to `clj-http-lite`
+    - **New!** `raven-clj.core/install-uncaught-exception-handler!` can be used to install an exception handler for uncaught exceptions.
 - **1.5.2**
     - Support new secret-less DSNs
 - **1.5.1**
