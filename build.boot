@@ -11,7 +11,7 @@
 (require '[adzerk.boot-test :refer [test]]
          '[adzerk.bootlaces :refer [bootlaces! build-jar push-release]])
 
-(def +version+ "1.5.1")
+(def +version+ "1.5.2")
 
 (bootlaces! +version+ :dont-modify-paths? true)
 

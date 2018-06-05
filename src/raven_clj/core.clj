@@ -8,7 +8,7 @@
 
 (def ^:private ^:const sentry-client
   "The name of this sentry client implementation"
-  "raven-clj/1.5.0")
+  "raven-clj/1.5.2")
 
 (defn- generate-uuid []
   (string/replace (UUID/randomUUID) #"-" ""))

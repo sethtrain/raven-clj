@@ -6,7 +6,7 @@ A Clojure interface to Sentry.
 
 [](dependency)
 ```clojure
-[raven-clj "1.5.1"] ;; latest release
+[raven-clj "1.5.2"] ;; latest release
 ```
 [](/dependency)
 
@@ -18,10 +18,10 @@ The `capture` function is a general use function that could be placed throughout
 (def dsn "https://b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d@example.com/1")
 
 (capture dsn {:message "Test Exception Message"
-             :tags {:version "1.0"}
-             :logger "main-logger"
-             :extra {:my-key 1
-                     :some-other-value "foo bar"}})
+              :tags {:version "1.0"}
+              :logger "main-logger"
+              :extra {:my-key 1
+                      :some-other-value "foo bar"}})
 
 ;; Associates:
 ;; "sentry.interfaces.Http"
@@ -92,6 +92,8 @@ raven-clj also includes a Ring middleware that sends the Http and Stacktrace int
 
 ## Changes
 
+- **1.5.2**
+    - Support new secret-less DSNs
 - **1.5.1**
     - Prevent indexOutOfBounds exception when determining context line ([#25](https://github.com/sethtrain/raven-clj/pull/25))
 - **1.5.0**
