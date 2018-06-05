@@ -1,5 +1,5 @@
 (set-env!
- :resource-paths #{"src"}
+ :resource-paths #{"src" "resources"}
  :dependencies '[[org.clojure/clojure "1.8.0" :scope "provided"]
                  [cheshire "5.0.1"]
                  [clj-http "3.0.1"]
@@ -8,10 +8,11 @@
                  [adzerk/bootlaces "0.1.13" :scope "test"]
                  [adzerk/boot-test "1.1.1"  :scope "test"]])
 
-(require '[adzerk.boot-test :refer [test]]
+(require '[raven-clj.core :as raven-clj]
+         '[adzerk.boot-test :refer [test]]
          '[adzerk.bootlaces :refer [bootlaces! build-jar push-release]])
 
-(def +version+ "1.5.2")
+(def +version+ (raven-clj/version))
 
 (bootlaces! +version+ :dont-modify-paths? true)
 

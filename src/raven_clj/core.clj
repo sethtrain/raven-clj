@@ -1,14 +1,18 @@
 (ns raven-clj.core
   (:require [cheshire.core :as json]
             [clj-http.client :as http]
+            [clojure.java.io :as io]
             [clojure.string :as string])
   (:import [java.util Date UUID]
            [java.sql Timestamp]
            [java.net InetAddress]))
 
+(defn version []
+  (string/trim (slurp (io/resource "raven_clj/version.txt"))))
+
 (def ^:private ^:const sentry-client
   "The name of this sentry client implementation"
-  "raven-clj/1.5.2")
+  (format "raven-clj/%s" (version)))
 
 (defn- generate-uuid []
   (string/replace (UUID/randomUUID) #"-" ""))
