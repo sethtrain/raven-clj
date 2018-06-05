@@ -17,9 +17,16 @@
   (format "%s/api/%s/store/"
           uri project-id))
 
-(defn make-sentry-header [ts key secret]
-  (format "Sentry sentry_version=2.0, sentry_client=%s, sentry_timestamp=%s, sentry_key=%s, sentry_secret=%s"
-          sentry-client ts key secret))
+(defn make-sentry-header
+  [ts key secret]
+  (->> ["Sentry sentry_version=2.0"
+        (format "sentry_client=%s" sentry-client)
+        (format "sentry_timestamp=%s" ts)
+        (format "sentry_key=%s" key)
+        (when secret
+          (format "sentry_secret=%s" secret))]
+       (remove nil?)
+       (string/join ", ")))
 
 (defn send-packet [{:keys [ts uri project-id key secret] :as packet-info}]
   (let [url (make-sentry-url uri project-id)
