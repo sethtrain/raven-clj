@@ -20,6 +20,6 @@
                        identity)]
       (try
         (handler req)
-        (catch Error e
+        (catch Throwable e
           (capture-error dsn req e (:extra opts) (:namespaces opts) alter-fn)
           (throw e))))))
