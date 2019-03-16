@@ -52,7 +52,11 @@
      :uri (format "%s://%s" protocol
                   (string/join
                     "/" (butlast (string/split url #"/"))))
-     :project-id (Integer/parseInt (last (string/split url #"/")))}))
+     :project-id (-> (string/split url #"/")
+                     (last)
+                     (string/split #"\?")
+                     (first)
+                     (Integer/parseInt))}))
 
 (defn capture
   "Send a message to a Sentry server.
