@@ -6,4 +6,5 @@
   :dependencies [[org.clojure/clojure "1.5.1" :scope "provided"]
                  [cheshire "5.8.0"]
                  [clj-http-lite "0.3.0"]
-                 [prone "1.0.1"]])
+                 [prone "1.0.1"]
+                 [ring/ring-codec "1.1.1"]])

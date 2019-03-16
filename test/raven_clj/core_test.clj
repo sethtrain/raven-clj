@@ -88,7 +88,9 @@
            {:key "b70a31b3510c4cf793964a185cfe1fd0"
             :secret "b7d80b520139450f903720eb7991bf3d"
             :uri "https://example.com:9000/sentry"
-            :project-id 1}))))
+            :project-id 1
+            :environment "test"
+            :servername "example"}))))
 
 (deftest test-capture
   (testing "capture"
