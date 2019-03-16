@@ -81,6 +81,13 @@
            {:key "b70a31b3510c4cf793964a185cfe1fd0"
             :secret "b7d80b520139450f903720eb7991bf3d"
             :uri "https://example.com:9000/sentry"
+            :project-id 1})))
+
+  (testing "dsn parsing with query parameters"
+    (is (= (parse-dsn "https://b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d@example.com:9000/sentry/1?environment=test&servername=example")
+           {:key "b70a31b3510c4cf793964a185cfe1fd0"
+            :secret "b7d80b520139450f903720eb7991bf3d"
+            :uri "https://example.com:9000/sentry"
             :project-id 1}))))
 
 (deftest test-capture
