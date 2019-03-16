@@ -4,7 +4,6 @@
                  [cheshire "5.0.1"]
                  [org.martinklepsch/clj-http-lite "0.4.1"]
                  [prone "1.0.1"]
-                 [ring/ring-codec "1.1.1"]
 
                  [adzerk/bootlaces "0.1.13" :scope "test"]
                  [adzerk/boot-test "1.1.1"  :scope "test"]])

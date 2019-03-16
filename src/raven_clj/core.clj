@@ -1,11 +1,9 @@
 (ns raven-clj.core
   (:require [cheshire.core :as json]
-            [clojure.walk :as walk]
             [raven-clj.interfaces :as interfaces]
             [clj-http.lite.client :as http]
             [clojure.java.io :as io]
-            [clojure.string :as string]
-            [ring.util.codec :as ring-codec])
+            [clojure.string :as string])
   (:import [java.util Date UUID]
            [java.sql Timestamp]
            [java.net InetAddress]))
@@ -19,11 +17,6 @@
 
 (defn- generate-uuid []
   (string/replace (UUID/randomUUID) #"-" ""))
-
-(defn- parse-query-params [params]
-  (if params
-    (-> (ring-codec/form-decode params)
-        (walk/keywordize-keys))))
 
 (defn make-sentry-url [uri project-id]
   (format "%s/api/%s/store/"
@@ -53,17 +46,17 @@
 (defn parse-dsn [dsn]
   (let [[proto-auth url] (string/split dsn #"@")
         [protocol auth] (string/split proto-auth #"://")
-        [key secret] (string/split auth #":")
-        [project-id query-params] (-> (string/split url #"/")
-                                      (last)
-                                      (string/split #"\?"))]
-    (merge (parse-query-params query-params)
-           {:key key
-            :secret secret
-            :uri (format "%s://%s" protocol
-                         (string/join
-                           "/" (butlast (string/split url #"/"))))
-            :project-id (Integer/parseInt project-id)})))
+        [key secret] (string/split auth #":")]
+    {:key key
+     :secret secret
+     :uri (format "%s://%s" protocol
+                  (string/join
+                    "/" (butlast (string/split url #"/"))))
+     :project-id (-> (string/split url #"/")
+                     (last)
+                     (string/split #"\?")
+                     (first)
+                     (Integer/parseInt))}))
 
 (defn capture
   "Send a message to a Sentry server.
