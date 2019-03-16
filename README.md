@@ -8,7 +8,7 @@ A Clojure interface to Sentry.
 
 [](dependency)
 ```clojure
-[raven-clj "1.6.0-alpha2"] ;; latest release
+[raven-clj "1.6.0-alpha3"] ;; latest release
 ```
 [](/dependency)
 
@@ -115,6 +115,8 @@ There are a variety of Clojure libraries for Sentry, a quick, not necessarily up
 
 ## Changes
 
+- **1.6.0-alpha3**
+    - Support query params in DSNs ([#27](https://github.com/sethtrain/raven-clj/pull/27))
 - **1.6.0-alpha2**
     - Switch from `clj-http-lite` to `org.martinklepsch/clj-http-lite` for Java 9+ compatibility
 - **1.6.0-alpha**
