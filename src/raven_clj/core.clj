@@ -23,18 +23,19 @@
           uri project-id))
 
 (defn make-sentry-header
-  [key secret]
+  [ts key secret]
   (->> ["Sentry sentry_version=2.0"
         (format "sentry_client=%s" sentry-client)
+        (format "sentry_timestamp=%d" ts)
         (format "sentry_key=%s" key)
         (when secret
           (format "sentry_secret=%s" secret))]
        (remove nil?)
        (string/join ", ")))
 
-(defn send-packet [{:keys [uri project-id key secret] :as packet-info}]
+(defn send-packet [{:keys [ts uri project-id key secret] :as packet-info}]
   (let [url (make-sentry-url uri project-id)
-        header (make-sentry-header key secret)
+        header (make-sentry-header ts key secret)
         body (dissoc packet-info :ts :uri :project-id :key :secret)]
     (http/post url
                {:throw-exceptions false
@@ -66,7 +67,8 @@
    (merge (parse-dsn dsn)
           {:level "error"
            :platform "clojure"
-           :server_name (.getHostName (InetAddress/getLocalHost))}
+           :server_name (.getHostName (InetAddress/getLocalHost))
+           :ts (.getTime (Date.))}
           event-info
           {:event_id (generate-uuid)})))
 

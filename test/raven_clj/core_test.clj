@@ -20,34 +20,40 @@
 
 (deftest test-make-sentry-header
   (testing "sentry header"
-    (let [key "b70a31b3510c4cf793964a185cfe1fd0"
+    (let [ts (.getTime (Date.))
+          key "b70a31b3510c4cf793964a185cfe1fd0"
           secret "b7d80b520139450f903720eb7991bf3d"
           client-version (version)
-          hdr (make-sentry-header key secret)]
+          hdr (make-sentry-header ts key secret)]
 
       (is (.contains hdr "sentry_version=2.0")
           "includes sentry version")
       (is (.contains hdr (str "sentry_client=raven-clj/" client-version))
           "includes client version")
+      (is (.contains hdr (format "sentry_timestamp=%d" ts))
+          "includes timestamp")
       (is (.contains hdr (str "sentry_key=" key))
           "includes key")
       (is (.contains hdr (str "sentry_secret=" secret))
           "includes secret")
-      (is (= hdr (format "Sentry sentry_version=2.0, sentry_client=raven-clj/%s, sentry_key=%s, sentry_secret=%s" client-version key secret)))))
+      (is (= hdr (format "Sentry sentry_version=2.0, sentry_client=raven-clj/%s, sentry_timestamp=%d, sentry_key=%s, sentry_secret=%s" client-version ts key secret)))))
 
   (testing "sentry header without secret"
-    (let [key "b70a31b3510c4cf793964a185cfe1fd0"
+    (let [ts (.getTime (Date.))
+          key "b70a31b3510c4cf793964a185cfe1fd0"
           secret nil
           client-version (version)
-          hdr (make-sentry-header key secret)]
+          hdr (make-sentry-header ts key secret)]
 
       (is (.contains hdr "sentry_version=2.0")
           "includes sentry version")
       (is (.contains hdr (str "sentry_client=raven-clj/" client-version))
           "includes client version")
+      (is (.contains hdr (format "sentry_timestamp=%d" ts))
+          "includes timestamp")
       (is (.contains hdr (str "sentry_key=" key))
           "includes key")
-      (is (= hdr (format "Sentry sentry_version=2.0, sentry_client=raven-clj/%s, sentry_key=%s" client-version key secret))))))
+      (is (= hdr (format "Sentry sentry_version=2.0, sentry_client=raven-clj/%s, sentry_timestamp=%d, sentry_key=%s" client-version ts key))))))
 
 (deftest test-send-packet
   (testing "send-packet"
@@ -56,7 +62,7 @@
                   :secret "secret"
                   :uri "uri"
                   :project-id "project-id"
-                  :ts "ts"}]
+                  :ts 123456789}]
       (with-redefs [http/post (fn [url opts]
                                 (reset! actual-opts opts))]
         (send-packet packet)
