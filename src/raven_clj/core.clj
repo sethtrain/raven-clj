@@ -26,7 +26,7 @@
   [ts key secret]
   (->> ["Sentry sentry_version=2.0"
         (format "sentry_client=%s" sentry-client)
-        (format "sentry_timestamp=%s" ts)
+        (format "sentry_timestamp=%d" ts)
         (format "sentry_key=%s" key)
         (when secret
           (format "sentry_secret=%s" secret))]
@@ -68,7 +68,7 @@
           {:level "error"
            :platform "clojure"
            :server_name (.getHostName (InetAddress/getLocalHost))
-           :ts (str (Timestamp. (.getTime (Date.))))}
+           :ts (.getTime (Date.))}
           event-info
           {:event_id (generate-uuid)})))
 
