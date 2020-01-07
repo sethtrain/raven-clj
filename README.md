@@ -8,7 +8,7 @@ A Clojure interface to Sentry.
 
 [](dependency)
 ```clojure
-[raven-clj "1.6.0-alpha4"] ;; latest release
+[raven-clj "1.6.0"] ;; latest release
 ```
 [](/dependency)
 
@@ -115,6 +115,8 @@ There are a variety of Clojure libraries for Sentry, a quick, not necessarily up
 
 ## Changes
 
+- **1.6.0**
+    - Bump to Cheshire 5.9.0 (Kevin W. van Rooijen, [#29](https://github.com/sethtrain/raven-clj/pull/29))
 - **1.6.0-alpha4**
     - Supply `sentry_timestamp` header in correct format (Joey Bloom, [#28](https://github.com/sethtrain/raven-clj/pull/28))
 - **1.6.0-alpha3**
