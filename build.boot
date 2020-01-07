@@ -1,7 +1,7 @@
 (set-env!
  :resource-paths #{"src" "resources"}
  :dependencies '[[org.clojure/clojure "1.8.0" :scope "provided"]
-                 [cheshire "5.0.1"]
+                 [cheshire "5.9.0"]
                  [org.martinklepsch/clj-http-lite "0.4.1"]
                  [prone "1.0.1"]
 
