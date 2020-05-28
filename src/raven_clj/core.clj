@@ -3,7 +3,8 @@
             [raven-clj.interfaces :as interfaces]
             [clj-http.lite.client :as http]
             [clojure.java.io :as io]
-            [clojure.string :as string])
+            [clojure.string :as string]
+            [clojure.walk :refer [keywordize-keys]])
   (:import [java.util Date UUID]
            [java.sql Timestamp]
            [java.net InetAddress]))
@@ -43,20 +44,33 @@
                           "User-Agent" sentry-client}
                 :body (json/generate-string body)})))
 
+(defn parse-query-params
+  [dsn]
+  (some-> dsn
+          (string/split #"\?" 2)
+          (nth 1 nil) ;; if no query params are defined, return nil breaking the threading macro
+          (string/split #"&")
+          (as-> xs
+                (mapcat #(string/split % #"=") xs)
+                (apply hash-map xs))
+          (keywordize-keys)))
+
 (defn parse-dsn [dsn]
   (let [[proto-auth url] (string/split dsn #"@")
         [protocol auth] (string/split proto-auth #"://")
-        [key secret] (string/split auth #":")]
-    {:key key
-     :secret secret
-     :uri (format "%s://%s" protocol
-                  (string/join
-                    "/" (butlast (string/split url #"/"))))
-     :project-id (-> (string/split url #"/")
-                     (last)
-                     (string/split #"\?")
-                     (first)
-                     (Integer/parseInt))}))
+        [key secret] (string/split auth #":")
+        query-parameters (parse-query-params dsn)]
+    (merge {:key key
+            :secret secret
+            :uri (format "%s://%s" protocol
+                         (string/join
+                           "/" (butlast (string/split url #"/"))))
+            :project-id (-> (string/split url #"/")
+                            (last)
+                            (string/split #"\?")
+                            (first)
+                            (Integer/parseInt))}
+           query-parameters)))
 
 (defn capture
   "Send a message to a Sentry server.
