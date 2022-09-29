@@ -56,7 +56,7 @@
                      (last)
                      (string/split #"\?")
                      (first)
-                     (Integer/parseInt))}))
+                     (parse-long))}))
 
 (defn capture
   "Send a message to a Sentry server.

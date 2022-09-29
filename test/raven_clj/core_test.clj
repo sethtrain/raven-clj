@@ -79,6 +79,13 @@
             :uri "https://example.com"
             :project-id 1})))
 
+  (testing "dsn parsing with long"
+    (is (= (parse-dsn "https://b70a31b3510c4cf793964a185cfe1fd0:b7d80b520139450f903720eb7991bf3d@example.com/99999999999")
+           {:key "b70a31b3510c4cf793964a185cfe1fd0"
+            :secret "b7d80b520139450f903720eb7991bf3d"
+            :uri "https://example.com"
+            :project-id 99999999999})))
+
   (testing "dsn parsing without secret"
     (is (= (parse-dsn "https://b70a31b3510c4cf793964a185cfe1fd0@example.com/1")
            {:key "b70a31b3510c4cf793964a185cfe1fd0"
