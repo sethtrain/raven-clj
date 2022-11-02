@@ -28,7 +28,7 @@ server.
                       :some-other-value "foo bar"}})
 ```
 
-Various interfaces are supported. 
+Various interfaces are supported.
 
 #### HTTP
 
@@ -115,6 +115,11 @@ There are a variety of Clojure libraries for Sentry, a quick, not necessarily up
 
 ## Changes
 
+- **1.7.0**
+    - Bump to Cheshire 5.11.0 (Emil Bengtsson, [#33](https://github.com/sethtrain/raven-clj/pull/33))
+    - Bump to clj-http-lite to org.clj-commons/clj-http-lite 1.0.13. Note it has switched to clj-commons
+    - Bump to prone 2021-04-23
+    - Fix parsing of project id number from sentry.io which caused an integer overflow. It now parses to long instead of integer.
 - **1.6.0**
     - Bump to Cheshire 5.9.0 (Kevin W. van Rooijen, [#29](https://github.com/sethtrain/raven-clj/pull/29))
 - **1.6.0-alpha4**
