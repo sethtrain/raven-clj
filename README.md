@@ -8,7 +8,7 @@ A Clojure interface to Sentry.
 
 [](dependency)
 ```clojure
-[raven-clj "1.6.0"] ;; latest release
+[raven-clj "1.7.0"] ;; latest release
 ```
 [](/dependency)
 
@@ -153,10 +153,10 @@ There are a variety of Clojure libraries for Sentry, a quick, not necessarily up
 
 ## Contributing
 
-- Build and install the jar with `boot build-jar`
-- Start a repl with `boot repl`
-- Run tests with `boot test!`
-- Deploy a release with `boot build-jar push-release`
+- Build and install the jar with `lein jar`
+- Start a repl with `lein repl`
+- Run tests with `lein test`
+- Deploy a release with `lein deploy clojars`
 
 PRs and issues welcome :tada:
 

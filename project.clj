@@ -1,4 +1,14 @@
-(defproject raven-clj "0.0.0-dont-deploy"
+(defn- get-version
+  ;; See README for notes on why.
+  "Grab the version for the project."
+  []
+  (require '[clojure.string :as str]
+           '[clojure.java.io :as io])
+  ;; since it is so early in the boot process, it
+  ;; has to be io/file, and not io/resource
+  (str/trim (slurp (io/file "resources/raven_clj/version.txt"))))
+
+(defproject raven-clj (get-version)
   :description "Sentry clojure client"
   :url "http://github.com/sethtrain/raven-clj"
   :license {:name "Eclipse Public License"
