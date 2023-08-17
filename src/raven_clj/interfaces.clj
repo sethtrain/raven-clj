@@ -15,7 +15,8 @@
    :headers (get req :headers {})
    :query_string (get req :query-string "")
    :data (get req :params {})
-   :env {:session (get req :session {})}})
+   :env {:session (get req :session {})
+         "REMOTE_ADDR" (get req :remote-addr "")}})
 
 (defn http [event-map req alter-fn]
   (assoc event-map "sentry.interfaces.Http"
