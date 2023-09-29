@@ -42,6 +42,11 @@
      :pre_context  (take 5 source)
      :post_context (drop 6 source)}))
 
+(defn- flatten-data [data]
+  (into {} (map (fn [[k v]]
+                  [(pr-str k) (pr-str v)])
+                data)))
+
 (defn stacktrace [event-map ^Exception e & [app-namespaces]]
   (let [stacks  (prone-stack/normalize-exception (clj-stack/root-cause e))
         frames  (map (partial frame->sentry app-namespaces)
@@ -49,4 +54,6 @@
     (assoc event-map
       :exception [{:value      (:message stacks)
                    :type       (:type stacks)
-                   :stacktrace {:frames frames}}])))
+                   :stacktrace {:frames frames}
+                   :mechanism  (cond-> {:type "generic"}
+                                       (:data stacks) (assoc :data (flatten-data (:data stacks))))}])))
