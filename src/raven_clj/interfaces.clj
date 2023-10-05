@@ -1,8 +1,8 @@
 (ns raven-clj.interfaces
-  (:require [prone.stacks :as prone-stack]
-            [clojure.stacktrace :as clj-stack]
-            [clojure.java.io :as io]
-            [clojure.string :as string]))
+  (:require
+    [clojure.java.io :as io]
+    [clojure.string :as string]
+    [prone.stacks :as prone-stack]))
 
 (defn- make-http-info [req]
   {:url (str (name (:scheme req))
@@ -42,11 +42,29 @@
      :pre_context  (take 5 source)
      :post_context (drop 6 source)}))
 
+(defn- exception-seq [ex]
+  (lazy-seq (cons ex (when-let [cause (:caused-by ex)]
+                       (exception-seq cause)))))
+
+(defn- flatten-data [data]
+  (into {} (map (fn [[k v]]
+                  [(pr-str k) (pr-str v)])
+                data)))
+
+(defn- exception->sentry [app-namespaces {:keys [data frames message type]}]
+  {:value      message
+   :type       type
+   ; "The list is ordered from caller to callee, or oldest to youngest.
+   ; The last frame is the one creating the exception."
+   ; https://develop.sentry.dev/sdk/event-payloads/stacktrace/
+   :stacktrace {:frames (map (partial frame->sentry app-namespaces)
+                             (reverse frames))}
+   :mechanism  (cond-> {:type "generic"}
+                       data (assoc :data (flatten-data data)))})
+
 (defn stacktrace [event-map ^Exception e & [app-namespaces]]
-  (let [stacks  (prone-stack/normalize-exception (clj-stack/root-cause e))
-        frames  (map (partial frame->sentry app-namespaces)
-                     (reverse (:frames stacks)))]
-    (assoc event-map
-      :exception [{:value      (:message stacks)
-                   :type       (:type stacks)
-                   :stacktrace {:frames frames}}])))
+  (assoc event-map
+    ; "Multiple values represent chained exceptions and should be sorted oldest to newest."
+    ; https://develop.sentry.dev/sdk/event-payloads/exception/
+    :exception (map (partial exception->sentry app-namespaces)
+                    (reverse (exception-seq (prone-stack/normalize-exception e))))))
