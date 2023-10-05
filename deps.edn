@@ -1,0 +1,17 @@
+{:paths
+ ["src" "resources"]
+
+ :deps
+ {org.clojure/clojure           {:mvn/version "1.11.1"}
+  cheshire/cheshire             {:mvn/version "5.11.0"}
+  org.clj-commons/clj-http-lite {:mvn/version "1.0.13"}
+  prone/prone                   {:mvn/version "2021-04-23"}}
+
+ :aliases
+ {:build {:deps       {io.github.clojure/tools.build {:mvn/version "0.9.5"}}
+          :ns-default build}
+  :test  {:extra-paths ["test"]
+          :extra-deps  {lambdaisland/kaocha           {:mvn/version "1.87.1366"}
+                        lambdaisland/kaocha-cloverage {:mvn/version "1.1.89"}
+                        lambdaisland/kaocha-junit-xml {:mvn/version "1.17.101"}}
+          :main-opts   ["-m" "kaocha.runner"]}}}
