@@ -18,8 +18,7 @@
    :env {:session (get req :session {})}})
 
 (defn http [event-map req alter-fn]
-  (assoc event-map "sentry.interfaces.Http"
-         (alter-fn (make-http-info req))))
+  (assoc event-map :request (alter-fn (make-http-info req))))
 
 (defn file->source [file-path line-number]
   (some-> file-path
